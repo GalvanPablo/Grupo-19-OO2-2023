@@ -25,20 +25,27 @@ public abstract class Medicion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idMedicion;
+    protected int idMedicion;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idDispositivo", nullable = false)
-    private Dispositivo dispositivo;
+    protected Dispositivo dispositivo;
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime fechaHoraRegistro;
+    protected LocalDateTime fechaHoraRegistro;
 
 
     // CONSTRUCTOR
     public Medicion(Dispositivo dispositivo) {
         this.dispositivo = dispositivo;
+    }
+
+    @Override
+    public String toString(){
+        return "idMedicion: " + idMedicion
+                + ", dispositivo: " + dispositivo
+                + ", fechaHoraRegistro: " + fechaHoraRegistro;
     }
 
 }
