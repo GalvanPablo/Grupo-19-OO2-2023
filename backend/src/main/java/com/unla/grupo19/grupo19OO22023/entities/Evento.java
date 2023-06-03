@@ -36,4 +36,16 @@ public class Evento {
     @Column(nullable = false)
     private LocalDateTime fechaHoraRegistro;
 
+    public Evento(Dispositivo dispositivo, String descripcion) {
+        this.dispositivo = dispositivo;
+        this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString(){
+        return "idEvento: " + idEvento
+                + ", dispositivo: " + dispositivo
+                + ", descripcion: " + descripcion
+                + ", fechaHoraRegistro: " + fechaHoraRegistro;
+    }
 }

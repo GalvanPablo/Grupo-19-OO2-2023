@@ -27,30 +27,40 @@ public abstract class Dispositivo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idDispositivo;
+    protected int idDispositivo;
 
     @Column(nullable = false, length = 50)
-    private String nombre;
+    protected String nombre;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idZona", nullable = false)
-    private Zona zona;
+    protected Zona zona;
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime fechaHoraCreacion;
+    protected LocalDateTime fechaHoraCreacion;
 
     @UpdateTimestamp
     @Column(nullable = false)
-    private LocalDateTime fechaHoraActualizacion;
+    protected LocalDateTime fechaHoraActualizacion;
 
     @Column(nullable = false)
-    private boolean baja;
+    protected boolean baja;
 
     public Dispositivo(String nombre, Zona zona) {
         this.nombre = nombre;
         this.zona = zona;
         this.baja = false;
+    }
+
+    @Override
+    public String toString(){
+        return "idDispositivo: " + idDispositivo
+                + ", nombre: " + nombre
+                + ", zona: " + zona
+                + ", fechaHoraCreacion: " + fechaHoraCreacion
+                + ", fechaHoraActualizacion: " + fechaHoraActualizacion
+                + ", baja: " + baja;
     }
 
 }
