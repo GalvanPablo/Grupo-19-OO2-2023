@@ -22,14 +22,14 @@ Queremos promover el uso inteligente de los recursos y compartir la información
 * [Andres Ezequiel Cupo](https://github.com/Suhiang98)
 * [Sebastián Marioni ](https://github.com/sebastianmarioni)
 * [Pablo Galvan](https://github.com/GalvanPablo)
+* [Edgar Rios](https://github.com/Edgar-Rios)
 
 ## :package: Soluciones IoT
-:hourglass_flowing_sand: A definir...
-<!--
-- `Funcionalidad 1`: descripción de la funcionalidad
-- `Funcionalidad 2`: descripción de la funcionalidad
-- `Funcionalidad 3`: descripción de la funcionalidad
--->
+- :bulb: `Alumbrado exterior`
+- :droplet: `Riego`
+- :car: `Estacionamiento`
+- :recycle: `Recolectores inteligentes`
+
 
 ## :wrench: Tecnologias a usar <!-- CAMBIAR A "Tecnologias usadas" -->
 ![Spring](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
@@ -40,4 +40,9 @@ Queremos promover el uso inteligente de los recursos y compartir la información
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 
 ## :gear: Dependencias
-:hourglass_flowing_sand: A definir...
+* [JPA](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa)
+* [Spring Devtools](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools)
+* [MySQL](https://mvnrepository.com/artifact/com.mysql/mysql-connector-j)
+* [Lombok](https://mvnrepository.com/artifact/org.projectlombok/lombok?repo=projectlombok-mavenrepo)
+* [Model Mapper](https://mvnrepository.com/artifact/org.modelmapper/modelmapper)
+* [Hibernate Validator Anotation](https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator)
