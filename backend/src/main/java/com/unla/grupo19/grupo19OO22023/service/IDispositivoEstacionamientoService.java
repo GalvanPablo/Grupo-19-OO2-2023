@@ -8,16 +8,16 @@ import com.unla.grupo19.grupo19OO22023.models.DispositivoEstacionamientoModelNoZ
 
 public interface IDispositivoEstacionamientoService {
 
-    public DispositivoEstacionamientoModel insert(DispositivoEstacionamiento dispositivo);
+    public DispositivoEstacionamientoModel insert(DispositivoEstacionamiento dispositivo) throws Exception;
 
-    public DispositivoEstacionamientoModel update(int idDispositivo, DispositivoEstacionamiento dispositivoActualizado);
+    public DispositivoEstacionamientoModel update(int idDispositivo, DispositivoEstacionamiento dispositivoActualizado) throws Exception;
 
-    public boolean remove(int idDispositivo); // Dar de baja lógica
+    public boolean remove(int idDispositivo) throws Exception; // Dar de baja lógica
 
     public List<DispositivoEstacionamientoModel> getAll();
 
-    public DispositivoEstacionamientoModel findByIdDispositivo(int id);
+    public DispositivoEstacionamientoModel findByIdDispositivo(int id) throws Exception;
 
-    public List<DispositivoEstacionamientoModelNoZona> findByZona(int idZona);
+    public List<DispositivoEstacionamientoModelNoZona> findByZona(int idZona) throws Exception;
 
 }
