@@ -151,6 +151,16 @@ public class DispositivoEstacionamientoService implements IDispositivoEstacionam
         return new DispositivoEstacionamientoModel(d.getIdDispositivo(), d.getNombre(), zona , d.getPlazas());
     }
 
+    // OBTENER POR ID completo
+    @Override
+    public DispositivoEstacionamiento findByIdDispositivoEntity(int id) throws Exception {
+        // VALIDACION INICIAL
+        if(!(id > 0)) throw new Exception(CodigoError.ID_INVALIDO.name());
+
+        // EJECUCION DE LA CONSULTA
+        return repository.findByIdDispositivo(id);
+    }
+
 
     // OBTENER POR ID DE ZONA
     @Override

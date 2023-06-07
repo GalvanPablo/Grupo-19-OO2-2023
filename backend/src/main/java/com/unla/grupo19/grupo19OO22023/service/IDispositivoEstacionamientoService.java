@@ -18,6 +18,8 @@ public interface IDispositivoEstacionamientoService {
 
     public DispositivoEstacionamientoModel findByIdDispositivo(int id) throws Exception;
 
+    public DispositivoEstacionamiento findByIdDispositivoEntity(int id) throws Exception;
+
     public List<DispositivoEstacionamientoModelNoZona> findByZona(int idZona) throws Exception;
 
 }
