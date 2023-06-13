@@ -13,4 +13,6 @@ public interface IMedicionEstacionamientoService {
 
     public MedicionEstacionamiento_Info_Model findByIdMedicion(int idMedicion) throws Exception;
 
+    public List<MedicionEstacionamiento_Info_Model> getLastMeasurements();
+
 }

@@ -1,6 +1,7 @@
 package com.unla.grupo19.grupo19OO22023.service.implementation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -72,5 +73,28 @@ public class MedicionEstacionamientoService implements IMedicionEstacionamientoS
         if(m == null) return null;
         return new MedicionEstacionamiento_Info_Model(m.getIdMedicion(), m.getDispositivo().getIdDispositivo(), m.getDispositivo().getZona().getIdZona(), m.getNroPlaza(), m.isOcupado(), m.getFechaHoraRegistro());
     }
-    
+
+    private boolean plazaExistente(List<MedicionEstacionamiento_Info_Model> mediciones, MedicionEstacionamiento_Info_Model mE) {
+        for (MedicionEstacionamiento_Info_Model m : mediciones) {
+            if( m.getIdZona() == mE.getIdZona() && m.getNroPlaza() == mE.getNroPlaza()) return true;
+        }
+        return false;
+    }
+
+    // El ultimo registro de cada plaza por zona de todas las zonas, ordenados por zona y plaza // Estado actual de las plazas
+    @Override
+    public List<MedicionEstacionamiento_Info_Model> getLastMeasurements() {
+        List<MedicionEstacionamiento_Info_Model> mediciones = getAll();
+        if(mediciones == null || mediciones.isEmpty()) return new ArrayList<MedicionEstacionamiento_Info_Model>();
+
+        Collections.reverse(mediciones);
+
+        List<MedicionEstacionamiento_Info_Model> ultimasMediciones = new ArrayList<MedicionEstacionamiento_Info_Model>();
+        for (MedicionEstacionamiento_Info_Model mE : mediciones) {
+            if(!plazaExistente(ultimasMediciones, mE)) ultimasMediciones.add(mE);
+        }
+
+        return ultimasMediciones;
+    }
+
 }

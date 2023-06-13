@@ -121,4 +121,22 @@ public class MedicionEstacionamientoRestController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Se produjo un error interno del servidor al intentar obtener la medicion de estacionamiento.");
     }
 
+
+    // OBTENER LA ULTIMA MEDICION DE CADA PLAZA/ZONA DE ESTACIONAMIENTO
+    // GET [server]/api/mediciones/estacionamiento/ultimas
+    @GetMapping("/ultimas")
+    public ResponseEntity<?> getLastMeasurements(){
+        imprimir("ULTIMAS MEDICIONES DE ESTACIONAMIENTO POR ZONA-PLAZA");
+
+        try {
+            List<MedicionEstacionamiento_Info_Model> mediciones = service.getLastMeasurements();
+            if(mediciones.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No hay mediciones de estacionamiento");
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(mediciones);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Se produjo un error interno del servidor al intentar obtener las mediciones de estacionamiento.");
+        }
+    }
 }
