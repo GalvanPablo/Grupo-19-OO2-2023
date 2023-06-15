@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.unla.grupo19.grupo19OO22023.dao.IMedicionEstacionamientoRepository;
 import com.unla.grupo19.grupo19OO22023.entities.DispositivoEstacionamiento;
+import com.unla.grupo19.grupo19OO22023.entities.Evento;
 import com.unla.grupo19.grupo19OO22023.entities.MedicionEstacionamiento;
 import com.unla.grupo19.grupo19OO22023.models.MedicionEstacionamiento_Info_Model;
+import com.unla.grupo19.grupo19OO22023.service.IEventoService;
 import com.unla.grupo19.grupo19OO22023.service.IMedicionEstacionamientoService;
 
 @Service("serviceMedicionEstacionamiento")
@@ -26,6 +28,11 @@ public class MedicionEstacionamientoService implements IMedicionEstacionamientoS
     @Autowired
     @Qualifier("serviceDispositivoEstacionamiento")
     private DispositivoEstacionamientoService serviceDispositivoEstacionamiento;
+
+    @Autowired
+    @Qualifier("serviceEvento")
+    private IEventoService serviceEvento;
+
 
 
     public static enum CodigoError {
@@ -43,9 +50,45 @@ public class MedicionEstacionamientoService implements IMedicionEstacionamientoS
         Set<Integer> plazas = ((DispositivoEstacionamiento)medicion.getDispositivo()).getPlazas();
         if(!plazas.contains(medicion.getNroPlaza())) throw new Exception(CodigoError.MEDICION_INVALIDA.name()); // La plaza medida no existe en el dispositivo
 
+        List<MedicionEstacionamiento_Info_Model> ultimasMediciones = getLastMeasurements();
+
         MedicionEstacionamiento mA = repository.save(medicion);
         if(mA == null) return null;
+
+        // VERIFICACION DE EVENTO
+        System.out.println("\n\n\n-- Verificacion de evento --");
+        boolean plazaEncontrada = false;
+        for (MedicionEstacionamiento_Info_Model mE : ultimasMediciones) { // Recorro las ultimas mediciones
+            if(mE.getIdZona() == mA.getDispositivo().getZona().getIdZona() && mE.getNroPlaza() == mA.getNroPlaza()){ // Si es de la misma zona y plaza
+                System.out.println("Se encontro medicion previa de la plaza");
+                plazaEncontrada = true;
+                if(mE.isOcupado() != mA.isOcupado()){ // Si el estado es distinto
+                    System.out.println("Evento agregado: " + addEvento(mA));
+                    break;
+                } else {
+                    System.out.println("No se agrega evento");
+                    break;
+                }
+            }
+        }
+        if(!plazaEncontrada){
+            System.out.println("No se encontro medicion previa de la plaza");
+            System.out.println("Evento agregado: " + addEvento(mA));
+        }
+
         return new MedicionEstacionamiento_Info_Model(mA.getIdMedicion(), mA.getDispositivo().getIdDispositivo(), mA.getDispositivo().getZona().getIdZona(), mA.getNroPlaza(), mA.isOcupado(), mA.getFechaHoraRegistro());
+    }
+
+    private boolean addEvento(MedicionEstacionamiento mA) throws Exception{
+        System.out.println("Añadiendo evento");
+        String descripcion = "La plaza " + mA.getNroPlaza() + " de la zona " + mA.getDispositivo().getZona().getIdZona();
+        if(mA.isOcupado()){
+            descripcion += " se ha ocupado";
+        } else {
+            descripcion += " se ha liberado";
+        }
+        Evento e = serviceEvento.insert(new Evento(mA.getDispositivo(), mA, descripcion));
+        return (e != null);
     }
 
 
