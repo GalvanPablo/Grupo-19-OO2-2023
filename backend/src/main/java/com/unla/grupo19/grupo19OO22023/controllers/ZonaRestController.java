@@ -46,7 +46,7 @@ public class ZonaRestController {
             if(error.equals(ZonaService.CodigoError.NOMBRE_INVALIDO.name())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre es invalido");
             if(error.equals(ZonaService.CodigoError.NOMBRE_YA_REGISTRADO.name())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ya existe una zona con ese nombre");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error desconocido");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error desconocido");
     }
 
 
@@ -72,7 +72,7 @@ public class ZonaRestController {
 
             if(error.equals(ZonaService.CodigoError.ID_INVALIDO.name())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El id es invalido");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error desconocido");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error desconocido");
     }
 
     // OBTENER POR NOMBRE
@@ -88,6 +88,6 @@ public class ZonaRestController {
 
             if(error.equals(ZonaService.CodigoError.NOMBRE_INVALIDO.name())) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre es invalido");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error desconocido");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error desconocido");
     }
 }

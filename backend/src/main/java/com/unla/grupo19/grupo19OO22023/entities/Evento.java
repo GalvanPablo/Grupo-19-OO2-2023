@@ -12,7 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +29,10 @@ public class Evento {
     @JoinColumn(name = "idDispositivo", nullable = false)
     private Dispositivo dispositivo;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idMedicion", nullable = false)
+    private Medicion medicion;
+
     @Column(nullable = false, length = 150)
     private String descripcion;
 
@@ -36,8 +40,9 @@ public class Evento {
     @Column(nullable = false)
     private LocalDateTime fechaHoraRegistro;
 
-    public Evento(Dispositivo dispositivo, String descripcion) {
+    public Evento(Dispositivo dispositivo, Medicion medicion, String descripcion) {
         this.dispositivo = dispositivo;
+        this.medicion = medicion;
         this.descripcion = descripcion;
     }
 
@@ -45,6 +50,7 @@ public class Evento {
     public String toString(){
         return "idEvento: " + idEvento
                 + ", dispositivo: " + dispositivo
+                + ", medicion: " + medicion
                 + ", descripcion: " + descripcion
                 + ", fechaHoraRegistro: " + fechaHoraRegistro;
     }
