@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import com.unla.grupo19.grupo19OO22023.service.IEventoService;
 import com.unla.grupo19.grupo19OO22023.service.implementation.EventoService;
 
 @RestController
+@CrossOrigin(origins = "*")
 
 @RequestMapping("/api/eventos")
 public class EventoRestController {
@@ -29,7 +31,6 @@ public class EventoRestController {
 
     // ALTA
     // POST [server]/api/eventos
-    // TODO El insert se debe de hacer cuando se agrega una medicion y esta cumple con la condicion de ser "critica"
     // @PostMapping("")
     // public ResponseEntity<?> newEvento(@RequestBody Evento evento){
     //     try {
