@@ -18,7 +18,9 @@ import com.unla.grupo19.grupo19OO22023.service.DispositivoDeRiegoService;
 import com.unla.grupo19.grupo19OO22023.service.IEventoService;
 import com.unla.grupo19.grupo19OO22023.service.MedicionDeRiegoService;
 
-@Service()
+import jakarta.transaction.Transactional;
+
+@Service("serviceMedicionRiego")
 public class MedicionDeRiegoServiceImple implements MedicionDeRiegoService {
 
 	@Autowired
@@ -36,7 +38,8 @@ public class MedicionDeRiegoServiceImple implements MedicionDeRiegoService {
 	private ModelMapper modelMapper = new ModelMapper();
 
 	@Override
-	public MedicionDeRiegoDTO insert(MedicionDeRiego medicionDeRiego) throws Exception {
+	@Transactional()
+	public void insert(MedicionDeRiego medicionDeRiego) throws Exception {
 
 		if (medicionDeRiego == null)
 			throw new MedicionDeRiegoServiceException("La medicion es null");
@@ -44,7 +47,6 @@ public class MedicionDeRiegoServiceImple implements MedicionDeRiegoService {
 			throw new MedicionDeRiegoServiceException("La medicion no tiene dispositivo asociado");
 
 		medicionDeRiegoDAO.save(medicionDeRiego);
-		MedicionDeRiegoDTO medicionAgregada = new MedicionDeRiegoDTO();
 
 		// Verificacion si se genera un nuevo evento
 		DispositivoDeRiego dispositivo = (DispositivoDeRiego) medicionDeRiego.getDispositivo();
@@ -55,15 +57,15 @@ public class MedicionDeRiegoServiceImple implements MedicionDeRiegoService {
 				String descripcion = "El dispositivo de riego " + dispositivo.getNombre() + " de la zona"
 						+ dispositivo.getZona().getNombre() + " dejo de regar.";
 				this.serviceEvento.insert(new Evento(dispositivo, medicionDeRiego, descripcion));
+				this.dispositivoDeRiegoService.updateDispositivoDeRiego(dispositivo);// Guardo el cambio de estado del dispositivo
 			} else if (!estadoAnterior && dispositivo.isActivo()) {
-				String descripcion = "El dispositivo de riego " + dispositivo.getNombre() + " de la zona"
+				String descripcion = "El dispositivo de riego " + dispositivo.getNombre() + " de la "
 						+ dispositivo.getZona().getNombre() + " ha empezado a regar.";
 				this.serviceEvento.insert(new Evento(dispositivo, medicionDeRiego, descripcion));
+				this.dispositivoDeRiegoService.updateDispositivoDeRiego(dispositivo);// Guardo el cambio de estado del dispositivo
 			}
 		}
 
-		modelMapper.map(medicionDeRiego, medicionAgregada);
-		return medicionAgregada;
 	}
 
 	@Override

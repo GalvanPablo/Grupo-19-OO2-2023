@@ -7,7 +7,7 @@ import com.unla.grupo19.grupo19OO22023.models.MedicionDeRiegoDTO;
 
 public interface MedicionDeRiegoService {
 
-	public MedicionDeRiegoDTO insert(MedicionDeRiego medicionDeRiego) throws Exception;
+	public void insert(MedicionDeRiego medicionDeRiego) throws Exception;
 	
 	public List<MedicionDeRiegoDTO> getAll();
 	

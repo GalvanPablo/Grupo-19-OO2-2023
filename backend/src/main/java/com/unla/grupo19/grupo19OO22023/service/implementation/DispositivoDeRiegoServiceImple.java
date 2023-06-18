@@ -73,4 +73,9 @@ public class DispositivoDeRiegoServiceImple implements DispositivoDeRiegoService
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public void updateDispositivoDeRiego(DispositivoDeRiego dispositivoDeRiego) {
+		this.dispositivoDeRiegoDAO.save(dispositivoDeRiego);
+	}
+
 }

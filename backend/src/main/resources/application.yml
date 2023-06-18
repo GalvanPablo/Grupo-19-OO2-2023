@@ -9,3 +9,8 @@ spring:
             ddl-auto: create-drop
         properties:
             dialect: org.hibernate.dialect.MySQL8Dialect
+            
+application:
+    security:
+        jwt:
+            secret-key: MKYLADGA2DXKGBSKWFCLKWVM23VQK873F4587GKLB5B52PKSZKA3B8EEWX2PLPPU

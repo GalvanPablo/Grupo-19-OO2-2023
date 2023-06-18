@@ -32,7 +32,7 @@ public abstract class Dispositivo {
     @Column(nullable = false, length = 50)
     protected String nombre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idZona", nullable = false)
     protected Zona zona;
 

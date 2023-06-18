@@ -21,9 +21,6 @@ public class MedicionDeRiego extends Medicion {
 	@Column(nullable = false)
 	private float temperaturaActual;
 
-	@Column(nullable = false)
-	private boolean activo;
-
 	public MedicionDeRiego(DispositivoDeRiego dispositivo, float humedadActual, float temperaturaActual) {
 		super(dispositivo);
 		this.humedadActual = humedadActual;
@@ -32,8 +29,9 @@ public class MedicionDeRiego extends Medicion {
 
 	@Override
 	public String toString() {
-		return "MedicionDeRiego [humedadActual=" + humedadActual + ", temperaturaActual=" + temperaturaActual
-				+ ", activo=" + activo + "]";
+		return "MedicionDeRiego [humedadActual=" + humedadActual + ", temperaturaActual=" + temperaturaActual + "]";
 	}
+
+	
 
 }

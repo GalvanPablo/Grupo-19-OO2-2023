@@ -10,6 +10,8 @@ public interface DispositivoDeRiegoService {
 	public DispositivoDeRiegoDTO createDispositivoDeRiego(DispositivoDeRiegoDTO dispositivoDeRiegoDTO);
 
 	public DispositivoDeRiegoDTO updateDispositivoDeRiego(DispositivoDeRiegoDTO dispositivoDeRiegoDTO, Long idDispositivo);
+	
+	public void updateDispositivoDeRiego(DispositivoDeRiego dispositivoDeRiego);
 
 	public void deleteDispositivoDeRiego(Long idDispositivo);
 

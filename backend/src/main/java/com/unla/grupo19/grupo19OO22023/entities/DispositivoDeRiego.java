@@ -21,7 +21,7 @@ public class DispositivoDeRiego extends Dispositivo {
 	private float temperatura;
 
 	@Column(nullable = false)
-	private boolean activo;
+	private boolean activo = false;
 
 	@Override
 	public String toString() {
@@ -33,12 +33,10 @@ public class DispositivoDeRiego extends Dispositivo {
 		if (this.activo && medicion.getHumedadActual() < this.humedad
 				&& medicion.getTemperaturaActual() < this.temperatura) {
 			this.activo = false;
-
 			return true;
 		} else if (!this.activo && medicion.getHumedadActual() > this.humedad
 				&& medicion.getTemperaturaActual() > this.temperatura) {
 			this.activo = true;
-
 			return true;
 		}
 
