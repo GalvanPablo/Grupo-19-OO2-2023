@@ -26,7 +26,7 @@ public class AuthenticationService {
 
 	public AuthenticationResponse register(RegisterRequest request) {
 		var user = User.builder().nombre(request.getNombre()).apellido(request.getApellido()).email(request.getEmail())
-				.password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
+				.password(passwordEncoder.encode(request.getPassword())).role(Role.AUDITOR).build();
 		repository.save(user);
 
 		// Adjuntar el rol del usuario en el token
