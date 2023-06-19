@@ -196,10 +196,10 @@ public class DispositivoEstacionamientoRestController {
             List<DispositivoEstacionamientoModel> dispositivos = service.getAll();
             if(!dispositivos.isEmpty()){
                 System.out.println("Dispositivos de estacionamiento encontrados: " + dispositivos.size());
-                return ResponseEntity.status(HttpStatus.OK).body(dispositivos);    
+            } else {
+                System.out.println("No se encontraron dispositivos de estacionamiento");
             }
-            System.out.println("No hay dispositivos de estacionamiento");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se han encontrado dispositivos de estacionamiento");
+            return ResponseEntity.status(HttpStatus.OK).body(dispositivos);    
         } catch (Exception e) {
             // MANEJO DE ERRORES
             System.out.println("Error interno del servidor");
@@ -218,10 +218,10 @@ public class DispositivoEstacionamientoRestController {
             DispositivoEstacionamientoModel dispositivo = service.findByIdDispositivo(id);
             if(dispositivo != null){
                 System.out.println("Dispositivo ID: " + id + " encontrado");
-                return ResponseEntity.status(HttpStatus.OK).body(dispositivo);
+            } else {
+                System.out.println("No se encontro el dispositivo ID: " + id + ".");
             }
-            System.out.println("No se encontro el dispositivo ID: " + id + ".");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el dispositivo de estacionamiento ID: " + id + ".");
+            return ResponseEntity.status(HttpStatus.OK).body(dispositivo);
         } catch (Exception e) {
             // MANEJO DE ERRORES
 
@@ -248,10 +248,10 @@ public class DispositivoEstacionamientoRestController {
             List<DispositivoEstacionamientoModelNoZona> dispositivos = service.findByZona(idZona);
             if(!dispositivos.isEmpty()){
                 System.out.println("Dispositivos de estacionamiento en la zona(" + idZona + ") encontrados: " + dispositivos.size());
-                return ResponseEntity.status(HttpStatus.OK).body(dispositivos);
+            } else {
+                System.out.println("No se encontraron dispositivo en la zona(" + idZona + ").");
             }
-            System.out.println("No se encontraron dispositivo en la zona(" + idZona + ").");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron dispositivos de estacionamiento en la zona(" + idZona + ").");
+            return ResponseEntity.status(HttpStatus.OK).body(dispositivos);
         } catch (Exception e) {
             // MANEJO DE ERRORES
 
