@@ -31,7 +31,7 @@ public class AuthenticationService {
 
 		// Adjuntar el rol del usuario en el token
 		Map<String, Object> extraClaims = new HashMap<>();
-		extraClaims.put("role", user.getRole().name());
+		extraClaims.put("roles", user.getRole().name());
 
 		var jwtToken = jwtService.generateToken(extraClaims, user);
 		return AuthenticationResponse.builder().token(jwtToken).build();
@@ -48,7 +48,7 @@ public class AuthenticationService {
 
 		// Adjuntar el rol del usuario en el token
 		Map<String, Object> extraClaims = new HashMap<>();
-		extraClaims.put("role", user.getRole().name());
+		extraClaims.put("roles", user.getRole().name());
 
 		var jwtToken = jwtService.generateToken(extraClaims, user);
 		return AuthenticationResponse.builder().token(jwtToken).build();
