@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Header, Modal } from './../../components';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 // Componentes usados para el formulario
 import { MultiselectNumber } from './../../components';
@@ -18,14 +19,21 @@ import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 
 
 const DispositivosRiego = () => {
-    // const { role } = useSelector((state) => state.auth); // Extrae el rol del usuario del store de redux
-    const role = 'ADMIN';
+
+    const { role } = useSelector((state) => state.auth); // Extrae el rol del usuario del store de redux
+    const token = useSelector((state) => state.auth.token); // Extrae el token del usuario del store de redux
 
     const tienePermiso = role === 'ADMIN'; // Si el rol es ADMIN, se le permite editar y eliminar
 
     const [zonas, setZonas] = React.useState([]); // Donde se guarda las zonas traidas de la api
     const cargarZonas = () => {
-        fetch(API_ZONAS.GET_ALL)
+        fetch(API_ZONAS.GET_ALL, {
+                method: 'GET', // Método de la solicitud (puede ser GET, POST, PUT, DELETE, etc.)
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json' // Tipo de contenido de la solicitud (puede ser application/json u otro)
+                },
+            })
             .then(response => response.json())
             .then(data => setZonas(data))
             .catch(error => console.log(error))
@@ -33,7 +41,13 @@ const DispositivosRiego = () => {
 
     const [dispositivos, setDispositivos] = React.useState([]); // Donde se guarda los dispositivos traidos de la api
     const cargarDispositivos = () => {
-        fetch(API_RIEGO.GET_ALL)
+        fetch(API_RIEGO.GET_ALL , {
+            method: 'GET', // Método de la solicitud (puede ser GET, POST, PUT, DELETE, etc.)
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json' // Tipo de contenido de la solicitud (puede ser application/json u otro)
+            },
+        })
             .then(response => response.json())
             .then(data => setDispositivos(data))
             .catch(error => Report.failure(
@@ -79,6 +93,7 @@ const DispositivosRiego = () => {
             fetch(API_RIEGO.CREATE, {
                 method: 'POST',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data),
@@ -107,6 +122,7 @@ const DispositivosRiego = () => {
             fetch(API_RIEGO.UPDATE(id), {
                 method: 'PUT',
                 headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data),
@@ -143,8 +159,9 @@ const DispositivosRiego = () => {
             'Cancelar',
             () => { // Cuando se confirma la eliminacion, se envia la peticion a la api
                 fetch(API_RIEGO.DELETE(id), {
-                    method: 'PUT',
+                    method: 'DELETE',
                     headers: {
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                 })
