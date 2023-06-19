@@ -19,7 +19,7 @@ import com.unla.grupo19.grupo19OO22023.service.IZonaService;
 import com.unla.grupo19.grupo19OO22023.service.implementation.ZonaService;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000/")
 
 @RequestMapping("/api/zonas")
 public class ZonaRestController {

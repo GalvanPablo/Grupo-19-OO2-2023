@@ -23,7 +23,7 @@ import com.unla.grupo19.grupo19OO22023.service.IDispositivoEstacionamientoServic
 import com.unla.grupo19.grupo19OO22023.service.implementation.DispositivoEstacionamientoService;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000/")
 
 @RequestMapping("/api/dispositivos/estacionamiento")
 public class DispositivoEstacionamientoRestController {

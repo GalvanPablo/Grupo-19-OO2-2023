@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 // REDUCERS
 import menuReducer from './reducers/menu.reducer';
@@ -9,4 +10,4 @@ const RootReducer = combineReducers({
     auth: authReducer
 });
 
-export default createStore(RootReducer);
+export default createStore(RootReducer, applyMiddleware(thunk));
