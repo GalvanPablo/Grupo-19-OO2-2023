@@ -21,7 +21,7 @@ import com.unla.grupo19.grupo19OO22023.service.IEventoService;
 import com.unla.grupo19.grupo19OO22023.service.implementation.EventoService;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000/")
 
 @RequestMapping("/api/eventos")
 public class EventoRestController {

@@ -19,6 +19,10 @@ function App() {
     const activeMenu = useSelector(state => state.menu.activeMenu);
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
+
+    // localStorage.clear();
+    // sessionStorage.clear();
+
     return (
         <BrowserRouter>
             {isAuthenticated ? (
@@ -35,6 +39,7 @@ function App() {
                         <div>
                             <Routes>
                                 {/* Dashboard */}
+                                <Route path='/auth' element={<Navigate to="/dashboard" />} />
                                 <Route path='/' element={<Navigate to="/dashboard" />} />
                                 <Route path='/dashboard' element={<Dashboard />} />
 

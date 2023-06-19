@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import static com.unla.grupo19.grupo19OO22023.entities.Role.ADMIN;
 import static com.unla.grupo19.grupo19OO22023.entities.Role.AUDITOR;
@@ -29,7 +32,8 @@ public class SecurityConfig { // Es el responsable de configurar la seguridad de
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
             .csrf().disable()
-
+            .cors()
+            .and()
             .authorizeHttpRequests()
             .requestMatchers(
                 "/api/v1/auth/**"
@@ -53,6 +57,19 @@ public class SecurityConfig { // Es el responsable de configurar la seguridad de
 
 
         return http.build();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        return new CorsFilter(source);
     }
 
 }
