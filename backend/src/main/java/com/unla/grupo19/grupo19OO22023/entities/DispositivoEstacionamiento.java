@@ -6,6 +6,7 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.JoinColumn;
 
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Setter @Getter @NoArgsConstructor
 public class DispositivoEstacionamiento extends Dispositivo{
     
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "dispositivo_estacionamiento_plazas", joinColumns = @JoinColumn(name = "dispositivo_estacionamiento_id_dispositivo"))
     @Column(name = "plaza")
     private Set<Integer> plazas;

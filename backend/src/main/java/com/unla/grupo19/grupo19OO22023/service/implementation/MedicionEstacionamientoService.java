@@ -17,6 +17,8 @@ import com.unla.grupo19.grupo19OO22023.models.MedicionEstacionamiento_Info_Model
 import com.unla.grupo19.grupo19OO22023.service.IEventoService;
 import com.unla.grupo19.grupo19OO22023.service.IMedicionEstacionamientoService;
 
+import jakarta.transaction.Transactional;
+
 @Service("serviceMedicionEstacionamiento")
 public class MedicionEstacionamientoService implements IMedicionEstacionamientoService {
 
@@ -43,6 +45,7 @@ public class MedicionEstacionamientoService implements IMedicionEstacionamientoS
 
     // ALTA
     @Override
+    @Transactional()
     public MedicionEstacionamiento_Info_Model insert(MedicionEstacionamiento medicion) throws Exception {
         if(medicion == null) throw new Exception(CodigoError.MEDICION_INVALIDA.name()); // La medicion es null
         if(medicion.getDispositivo() == null) throw new Exception(CodigoError.DISPOSITIVO_INVALIDO.name()); // La medicion no tiene dispositivo

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import com.unla.grupo19.grupo19OO22023.service.IDispositivoEstacionamientoServic
 import com.unla.grupo19.grupo19OO22023.service.implementation.DispositivoEstacionamientoService;
 
 @RestController
+@CrossOrigin(origins = "*")
 
 @RequestMapping("/api/dispositivos/estacionamiento")
 public class DispositivoEstacionamientoRestController {
@@ -43,6 +46,7 @@ public class DispositivoEstacionamientoRestController {
     //     "plazas": [1, 2, 3, 4, 5]
     // }
     @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> newDispositivoEstacionamiento(@RequestBody DispositivoEstacionamiento dispositivo) {
         try {
             // EJECUCION
@@ -84,6 +88,7 @@ public class DispositivoEstacionamientoRestController {
     // BAJA LOGICA DE UN DISPOSITIVO DE ESTACIONAMIENTO - ## ADMINISTRADOR ##
     // PUT [server]/api/dispositivos/estacionamiento/{id}/baja
     @PutMapping("/{id}/baja")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> removeDispositivoEstacionamiento(@PathVariable("id") int idDispositivo) {
         imprimir("DAR DE BAJA LOGICA UN DISPOSITIVO DE ESTACIONAMIENTO");
 
@@ -124,6 +129,7 @@ public class DispositivoEstacionamientoRestController {
     //     "plazas": [1, 2, 3, 4, 5]
     // }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateDispositivoEstacionamiento(@PathVariable("id") int idDispositivo, @RequestBody DispositivoEstacionamiento dispositivoActualizado) {
         imprimir("MODIFICAR UN DISPOSITIVO DE ESTACIONAMIENTO");
 
@@ -186,6 +192,7 @@ public class DispositivoEstacionamientoRestController {
     // OBTENER TODOS LOS DISPOSITIVOS DE ESTACIONAMIENTO - ## ADMINISTRADOR y AUDITOR ##
     // GET [server]/api/dispositivos/estacionamiento
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getAllDispositivoEstacionamiento() {
         imprimir("OBTENER TODOS LOS DISPOSITIVOS DE ESTACIONAMIENTO");
 
@@ -194,10 +201,10 @@ public class DispositivoEstacionamientoRestController {
             List<DispositivoEstacionamientoModel> dispositivos = service.getAll();
             if(!dispositivos.isEmpty()){
                 System.out.println("Dispositivos de estacionamiento encontrados: " + dispositivos.size());
-                return ResponseEntity.status(HttpStatus.OK).body(dispositivos);    
+            } else {
+                System.out.println("No se encontraron dispositivos de estacionamiento");
             }
-            System.out.println("No hay dispositivos de estacionamiento");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se han encontrado dispositivos de estacionamiento");
+            return ResponseEntity.status(HttpStatus.OK).body(dispositivos);    
         } catch (Exception e) {
             // MANEJO DE ERRORES
             System.out.println("Error interno del servidor");
@@ -209,6 +216,7 @@ public class DispositivoEstacionamientoRestController {
     // OBTENER UN DISPOSITIVO DE ESTACIONAMIENTO POR ID - ## ADMINISTRADOR y AUDITOR ##
     // GET [server]/api/dispositivos/estacionamiento/{id}
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getDispositivoEstacionamientoById(@PathVariable("id") int id) {
         imprimir("OBTENER UN DISPOSITIVO DE ESTACIONAMIENTO POR ID");
 
@@ -216,10 +224,10 @@ public class DispositivoEstacionamientoRestController {
             DispositivoEstacionamientoModel dispositivo = service.findByIdDispositivo(id);
             if(dispositivo != null){
                 System.out.println("Dispositivo ID: " + id + " encontrado");
-                return ResponseEntity.status(HttpStatus.OK).body(dispositivo);
+            } else {
+                System.out.println("No se encontro el dispositivo ID: " + id + ".");
             }
-            System.out.println("No se encontro el dispositivo ID: " + id + ".");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el dispositivo de estacionamiento ID: " + id + ".");
+            return ResponseEntity.status(HttpStatus.OK).body(dispositivo);
         } catch (Exception e) {
             // MANEJO DE ERRORES
 
@@ -238,6 +246,7 @@ public class DispositivoEstacionamientoRestController {
     // OBTENER UN DISPOSITIVO DE ESTACIONAMIENTO POR ID DE ZONA - ## ADMINISTRADOR y AUDITOR ##
     // GET [server]/api/dispositivos/estacionamiento/zona/{idZona}
     @GetMapping("/zona/{idZona}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getDispositivoEstacionamientoByZona(@PathVariable("idZona") int idZona) {
         imprimir("OBTENER UN DISPOSITIVO DE ESTACIONAMIENTO POR ID DE ZONA");
 
@@ -246,10 +255,10 @@ public class DispositivoEstacionamientoRestController {
             List<DispositivoEstacionamientoModelNoZona> dispositivos = service.findByZona(idZona);
             if(!dispositivos.isEmpty()){
                 System.out.println("Dispositivos de estacionamiento en la zona(" + idZona + ") encontrados: " + dispositivos.size());
-                return ResponseEntity.status(HttpStatus.OK).body(dispositivos);
+            } else {
+                System.out.println("No se encontraron dispositivo en la zona(" + idZona + ").");
             }
-            System.out.println("No se encontraron dispositivo en la zona(" + idZona + ").");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron dispositivos de estacionamiento en la zona(" + idZona + ").");
+            return ResponseEntity.status(HttpStatus.OK).body(dispositivos);
         } catch (Exception e) {
             // MANEJO DE ERRORES
 

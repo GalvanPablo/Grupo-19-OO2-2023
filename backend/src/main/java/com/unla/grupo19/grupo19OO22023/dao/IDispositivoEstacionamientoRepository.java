@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository("repositoryDispositivoEstacionamiento")
 public interface IDispositivoEstacionamientoRepository extends JpaRepository<DispositivoEstacionamiento, Serializable> {
+
+    public abstract List<DispositivoEstacionamiento> findByBajaFalse();
     
     public abstract DispositivoEstacionamiento findByIdDispositivo(int id);
 

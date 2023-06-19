@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import com.unla.grupo19.grupo19OO22023.service.IZonaService;
 import com.unla.grupo19.grupo19OO22023.service.implementation.ZonaService;
 
 @RestController
+@CrossOrigin(origins = "*")
 
 @RequestMapping("/api/zonas")
 public class ZonaRestController {

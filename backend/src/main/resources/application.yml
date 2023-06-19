@@ -6,6 +6,15 @@ spring:
     jpa:
         show-sql: true
         hibernate:
-            ddl-auto: update
+            ddl-auto: create-drop
         properties:
             dialect: org.hibernate.dialect.MySQL8Dialect
+            
+application:
+    security:
+        jwt:
+            secret-key: MKYLADGA2DXKGBSKWFCLKWVM23VQK873F4587GKLB5B52PKSZKA3B8EEWX2PLPPU
+            
+logging:
+  level:
+    org.springframework.security: DEBUG

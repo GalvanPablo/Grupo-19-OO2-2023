@@ -112,14 +112,8 @@ public class DispositivoEstacionamientoService implements IDispositivoEstacionam
 
     // OBTENER TODOS
     @Override
-    public List<DispositivoEstacionamientoModel> getAll() {
-        // TODO FIX - No entiendo porque no me deja pasar la zona directamente utilizando el modelMapper
-        // Ver si se puede hacer algo con el modelMapper para que no sea necesario hacer esto
-        // Actualmente uso este codigo en otras partes de este archivo´
-        // Si no hay alguna forma de hacerlo con el modelMapper, crear un metodo privado que haga esto para reducir codigo
-        
-        // EJECUCION DE LA CONSULTA
-        List<DispositivoEstacionamiento> dispositivos = repository.findAll(); // Obtengo todos los dispositivos que no esten dados de baja
+    public List<DispositivoEstacionamientoModel> getAll() {// EJECUCION DE LA CONSULTA
+        List<DispositivoEstacionamiento> dispositivos = repository.findByBajaFalse(); // Obtengo todos los dispositivos que no esten dados de baja
         List<DispositivoEstacionamientoModel> dispositivosModel = new ArrayList<DispositivoEstacionamientoModel>(); // Creo una lista de dispositivosModel
 
         for (DispositivoEstacionamiento d : dispositivos) { // Itero sobre los dispositivos y los agrego a la lista de dispositivosModel transformandolos SIN EL MODEL MAPPER
