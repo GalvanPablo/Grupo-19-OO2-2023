@@ -46,8 +46,8 @@ public class SimulacionMedicionesRiego {
 			MedicionDeRiego medicionNueva = new MedicionDeRiego(dispositivo, humedad, temperatura);
 
 			try {
-				logger.info("Se agrego una nueva medicion para el siguiente dispositivo: \n " + dispositivo.toString());
 				medicionDeRiegoService.insert(medicionNueva);
+				logger.info("Se agrego una nueva medicion para el siguiente dispositivo: \n " + dispositivo.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

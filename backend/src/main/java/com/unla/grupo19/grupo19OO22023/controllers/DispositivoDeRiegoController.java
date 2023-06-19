@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus;
 
 
 @RestController
-@RequestMapping("/dispositivoDeRiego")
+@RequestMapping("/api/dispositivos/riego")
 public class DispositivoDeRiegoController {
 
 	@Autowired
