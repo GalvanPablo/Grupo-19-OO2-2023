@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,6 +60,7 @@ public class EventoRestController {
     // OBTENER TODAS
     // GET [server]/api/eventos
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getAll(){
         try {
             List<Evento> eventos = service.getAll();
@@ -74,6 +76,7 @@ public class EventoRestController {
     // OBTENER POR ID
     // GET [server]/api/eventos/1
     @GetMapping("/{idEvento}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getById(@PathVariable("idEvento") int idEvento){
         try {
             Evento e = service.findByIdEvento(idEvento);
@@ -90,6 +93,7 @@ public class EventoRestController {
     // OBTENER POR DISPOSITIVO
     // GET [server]/api/eventos/dispositivo/1
     @GetMapping("/dispositivo/{idDispositivo}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getByDispositivo(@PathVariable("idDispositivo") int idDispositivo){
         try {
             List<Evento> eventos  = service.findAllByDispositivoIdDispositivo(idDispositivo);
@@ -107,6 +111,7 @@ public class EventoRestController {
     // GET [server]/api/eventos/fecha/2020-01-01T00:00:00/2020-01-01T23:59:59
     // aaaa-MM-ddThh:mm:ss
     @GetMapping("/fecha/{fechaHoraDesde}/{fechaHoraHasta}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getByFechaHoraRegistroBetween(@PathVariable("fechaHoraDesde") LocalDateTime fechaHoraDesde, @PathVariable("fechaHoraHasta") LocalDateTime fechaHoraHasta){
         System.out.println("fechaHoraDesde: " + fechaHoraDesde + " fechaHoraHasta: " + fechaHoraHasta);
 

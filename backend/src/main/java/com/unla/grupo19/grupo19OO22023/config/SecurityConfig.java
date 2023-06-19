@@ -37,7 +37,8 @@ public class SecurityConfig { // Es el responsable de configurar la seguridad de
                 .permitAll()
 
             .requestMatchers(
-                "/api/dispositivos/**"
+                "/api/dispositivos/**",
+                "/api/eventos/**"
             )
                 .hasAnyRole(ADMIN.name(), AUDITOR.name())
             

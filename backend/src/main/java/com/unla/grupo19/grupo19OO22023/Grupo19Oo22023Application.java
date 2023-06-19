@@ -9,7 +9,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class Grupo19Oo22023Application {
 
 	public static void main(String[] args) {
+		System.out.println("#################################################################");
+		System.out.println("\tACORDARSE DE CAMBIAR EL ACCESO A LA BASE DE DATOS EN EL ARCHIVO application.yml");
+		System.out.println("#################################################################\n\n\n\n");
 		SpringApplication.run(Grupo19Oo22023Application.class, args);
 	}
 
 }
+

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,7 @@ public class DispositivoEstacionamientoRestController {
     //     "plazas": [1, 2, 3, 4, 5]
     // }
     @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> newDispositivoEstacionamiento(@RequestBody DispositivoEstacionamiento dispositivo) {
         try {
             // EJECUCION
@@ -86,6 +88,7 @@ public class DispositivoEstacionamientoRestController {
     // BAJA LOGICA DE UN DISPOSITIVO DE ESTACIONAMIENTO - ## ADMINISTRADOR ##
     // PUT [server]/api/dispositivos/estacionamiento/{id}/baja
     @PutMapping("/{id}/baja")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> removeDispositivoEstacionamiento(@PathVariable("id") int idDispositivo) {
         imprimir("DAR DE BAJA LOGICA UN DISPOSITIVO DE ESTACIONAMIENTO");
 
@@ -126,6 +129,7 @@ public class DispositivoEstacionamientoRestController {
     //     "plazas": [1, 2, 3, 4, 5]
     // }
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> updateDispositivoEstacionamiento(@PathVariable("id") int idDispositivo, @RequestBody DispositivoEstacionamiento dispositivoActualizado) {
         imprimir("MODIFICAR UN DISPOSITIVO DE ESTACIONAMIENTO");
 
@@ -188,6 +192,7 @@ public class DispositivoEstacionamientoRestController {
     // OBTENER TODOS LOS DISPOSITIVOS DE ESTACIONAMIENTO - ## ADMINISTRADOR y AUDITOR ##
     // GET [server]/api/dispositivos/estacionamiento
     @GetMapping("")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getAllDispositivoEstacionamiento() {
         imprimir("OBTENER TODOS LOS DISPOSITIVOS DE ESTACIONAMIENTO");
 
@@ -211,6 +216,7 @@ public class DispositivoEstacionamientoRestController {
     // OBTENER UN DISPOSITIVO DE ESTACIONAMIENTO POR ID - ## ADMINISTRADOR y AUDITOR ##
     // GET [server]/api/dispositivos/estacionamiento/{id}
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getDispositivoEstacionamientoById(@PathVariable("id") int id) {
         imprimir("OBTENER UN DISPOSITIVO DE ESTACIONAMIENTO POR ID");
 
@@ -240,6 +246,7 @@ public class DispositivoEstacionamientoRestController {
     // OBTENER UN DISPOSITIVO DE ESTACIONAMIENTO POR ID DE ZONA - ## ADMINISTRADOR y AUDITOR ##
     // GET [server]/api/dispositivos/estacionamiento/zona/{idZona}
     @GetMapping("/zona/{idZona}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'AUDITOR')")
     public ResponseEntity<?> getDispositivoEstacionamientoByZona(@PathVariable("idZona") int idZona) {
         imprimir("OBTENER UN DISPOSITIVO DE ESTACIONAMIENTO POR ID DE ZONA");
 
