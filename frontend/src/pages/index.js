@@ -5,6 +5,8 @@ export { default as Dashboard } from './Dashboard'
 // SOLUCIONES
 export { default as DispositivosEstacionamiento } from './soluciones/DispositivosEstacionamiento'
 
+export {default as DispositivoRiego} from './soluciones/DispositivoRiego'
+
 export { default as EventosDispositivo } from './EventosDispositivo'
 
 

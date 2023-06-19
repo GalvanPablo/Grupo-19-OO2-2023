@@ -9,6 +9,13 @@ export const API_ESTACIONAMIENTO = {
     // GET_BY_NAME: (name) => API_URL + `dispositivos/estacionamiento?name=${name}`,
 }
 
+export const API_RIEGO = {
+    CREATE: API_URL + '/dispositivos/riego/create',
+    DELETE: (id) => API_URL + `/dispositivos/riego/${id}`,
+    UPDATE: (id) => API_URL + `/dispositivos/riego/update/${id}`,
+    GET_ALL: API_URL + '/dispositivos/riego/all',
+}
+
 export const API_EVENTO = {
     GET_BY_ID_DISPOSITIVO: (id) => API_URL + `eventos/dispositivo/${id}`,
 }
