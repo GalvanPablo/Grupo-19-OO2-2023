@@ -5,7 +5,7 @@ INSERT INTO Zona (id_zona, nombre ) VALUES (4, 'Zona Oeste' );
 
 /*Primer Dispositivo de Riego*/
 INSERT INTO Dispositivo (id_dispositivo, nombre, id_zona, fecha_hora_creacion, fecha_hora_actualizacion, baja) VALUES (1, 'DispositivoDeRiego1', 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, FALSE);
-INSERT INTO Dispositivo_de_riego (id_dispositivo, humedad, temperatura,activo) VALUES (1, 0.7, 25.0,false);
+INSERT INTO Dispositivo_de_riego (id_dispositivo, humedad, temperatura,activo) VALUES (1, 10, 25.0,false);
 
 /*Segundo Dispositivo de Riego*/
 INSERT INTO Dispositivo (id_dispositivo, nombre, id_zona, fecha_hora_creacion, fecha_hora_actualizacion, baja) VALUES (2, 'DispositivoDeRiego2', 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, FALSE);
