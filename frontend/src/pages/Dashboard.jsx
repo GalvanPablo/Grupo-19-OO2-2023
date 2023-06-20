@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { API_ESTACIONAMIENTO } from '../data/api'
+import { API_ESTACIONAMIENTO, API_RIEGO } from '../data/api'
 import { useSelector } from 'react-redux';
 
 import { Header } from '../components';
@@ -43,7 +43,7 @@ const Dashboard = () => {
     const [cantDispositivosDeRiego, setCantDispositivosDeRiego] = useState(0)
     const [cantDispositivosDeRiegoActivos, setCantDispositivosDeRiegoActivos] = useState(0)
     const obtenerDataDispositivosDeRiego = () => {
-        fetch('http://localhost:8080/api/dispositivos/riego/all', {
+        fetch(API_RIEGO.GET_ALL, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,

@@ -3,9 +3,6 @@ import { Header, Modal } from './../../components';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-// Componentes usados para el formulario
-import { MultiselectNumber } from './../../components';
-
 // Links de la API
 import {API_ZONAS, API_RIEGO } from '../../data/api';
 
