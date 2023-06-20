@@ -1,17 +1,20 @@
 package com.unla.grupo19.grupo19OO22023.service.implementation;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unla.grupo19.grupo19OO22023.Exception.DispositivoDeRiegoServiceException;
 import com.unla.grupo19.grupo19OO22023.dao.DispositivoDeRiegoDAO;
 import com.unla.grupo19.grupo19OO22023.entities.DispositivoDeRiego;
+import com.unla.grupo19.grupo19OO22023.entities.Zona;
 import com.unla.grupo19.grupo19OO22023.models.DispositivoDeRiegoDTO;
 import com.unla.grupo19.grupo19OO22023.service.DispositivoDeRiegoService;
 
@@ -27,6 +30,12 @@ public class DispositivoDeRiegoServiceImple implements DispositivoDeRiegoService
 	@Override
 	@Transactional()
 	public DispositivoDeRiegoDTO createDispositivoDeRiego(DispositivoDeRiegoDTO dispositivoDeRiegoDTO) {
+		
+		Optional<DispositivoDeRiego> dispositivo = dispositivoDeRiegoDAO.buscarPorNombre(dispositivoDeRiegoDTO.getNombre());
+		
+		if(dispositivo.isPresent()) {
+			throw new DispositivoDeRiegoServiceException("El nombre del dispositivo que quiere agregar ya esta ocupado, porfavor ingrese otro");
+		}
 
 		DispositivoDeRiego newDispositivoDeRiego = new DispositivoDeRiego();
 		modelMapper.map(dispositivoDeRiegoDTO, newDispositivoDeRiego);
@@ -39,16 +48,30 @@ public class DispositivoDeRiegoServiceImple implements DispositivoDeRiegoService
 	public DispositivoDeRiego loadDispositivoDeRiegoById(Long idDispositivo) {
 
 		return this.dispositivoDeRiegoDAO.findById(idDispositivo)
-				.orElseThrow(() -> new DispositivoDeRiegoServiceException("Dispositivo con ID: " + idDispositivo + " no se encontro"));
-
+					.orElseThrow(() -> new DispositivoDeRiegoServiceException("Dispositivo con ID: " + idDispositivo + " no se encontro")); 
 	}
 
 	@Override
 	@Transactional()
 	public DispositivoDeRiegoDTO updateDispositivoDeRiego(DispositivoDeRiegoDTO dispositivoDeRiegoDTO, Long idDispositivo) {
 		
+		Optional<DispositivoDeRiego> dispositivo = dispositivoDeRiegoDAO.buscarPorNombre(dispositivoDeRiegoDTO.getNombre());
 		DispositivoDeRiego loadedDispositivo = this.loadDispositivoDeRiegoById(idDispositivo);
-	    modelMapper.map(dispositivoDeRiegoDTO, loadedDispositivo);
+		
+		if(!loadedDispositivo.getNombre().equalsIgnoreCase(dispositivo.get().getNombre()))
+		{
+			if(dispositivo.isPresent() && dispositivo.get().getNombre().equalsIgnoreCase(dispositivoDeRiegoDTO.getNombre())) {
+				throw new DispositivoDeRiegoServiceException("El nombre del dispositivo que quiere agregar ya esta ocupado, porfavor ingrese otro");
+			}
+		}
+		
+		Zona zona = new Zona();
+		modelMapper.map(dispositivoDeRiegoDTO.getZona(), zona);
+		loadedDispositivo.setZona(zona);
+		loadedDispositivo.setTemperatura(dispositivoDeRiegoDTO.getTemperatura());
+		loadedDispositivo.setHumedad(dispositivoDeRiegoDTO.getHumedad());
+		loadedDispositivo.setNombre(dispositivoDeRiegoDTO.getNombre());
+		
 	    DispositivoDeRiego updatedDispositivoDeRiego = this.dispositivoDeRiegoDAO.save(loadedDispositivo);
 	    modelMapper.map(updatedDispositivoDeRiego, dispositivoDeRiegoDTO);
 	    

@@ -82,6 +82,7 @@ const DispositivosRiego = () => {
             return;
         }
         const data = {
+            idDispositivo: id,
             nombre: nombre,
             zona: zona,
             humedad: humedad,
@@ -98,26 +99,35 @@ const DispositivosRiego = () => {
                 },
                 body: JSON.stringify(data),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        response.text().then(text => {
-                            Report.failure(
-                                'ERROR ' + response.status,
-                                text,
-                                'Aceptar'
-                            );
-                        });
-                    } else {
-                        response.json()
-                        Report.success(
-                            'Dispositivo creado',
-                            'Se ha creado el dispositivo correctamente',
+            .then(response => {
+                if (!response.ok) {
+                    response.json().then(errorObj => {
+                        let errorMessage;
+                        // Determinar cuál mensaje de error mostrar
+                        if (errorObj.status === 400) {
+                            errorMessage = errorObj.errors[0]; // Usar el primer error de la lista
+                        } else {
+                            errorMessage = errorObj.message; // Usar el mensaje directamente
+                        }
+                        // Mostrar el mensaje de error
+                        Report.failure(
+                            'ERROR ' + response.status,
+                            errorMessage,
                             'Aceptar'
                         );
-                        cargarDispositivos();
-                    }
-                })
+                    });
+                } else {
+                    response.json()
+                    Report.success(
+                        'Dispositivo creado',
+                        'Se ha creado el dispositivo correctamente',
+                        'Aceptar'
+                    );
+                    cargarDispositivos();
+                }
+            })
         } else {
+            console.log(data);
             // EDITAR DISPOSITIVO
             fetch(API_RIEGO.UPDATE(id), {
                 method: 'PUT',
@@ -127,15 +137,23 @@ const DispositivosRiego = () => {
                 },
                 body: JSON.stringify(data),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        response.text().then(text => {
-                            Report.failure(
-                                'ERROR ' + response.status,
-                                text,
-                                'Aceptar'
-                            );
-                        });
+            .then(response => {
+                if (!response.ok) {
+                    response.json().then(errorObj => {
+                        let errorMessage;
+                        // Determinar cuál mensaje de error mostrar
+                        if (errorObj.status === 400) {
+                            errorMessage = errorObj.errors[0]; // Usar el primer error de la lista
+                        } else {
+                            errorMessage = errorObj.message; // Usar el mensaje directamente
+                        }
+                        // Mostrar el mensaje de error
+                        Report.failure(
+                            'ERROR ',
+                            errorMessage,
+                            'Aceptar'
+                        );
+                    });
                     } else {
                         response.json()
                         Report.success(
@@ -165,15 +183,23 @@ const DispositivosRiego = () => {
                         'Content-Type': 'application/json'
                     },
                 })
-                    .then(response => { // Analizo la respuesta
-                        if (!response.ok) { // Si la respuesta no es 200 OK, muestro el error
-                            response.text().then(text => { // Convierto la respuesta a texto
-                                Report.failure(
-                                    'ERROR ' + response.status,
-                                    text,
-                                    'Aceptar'
-                                );
-                            });
+                .then(response => {
+                    if (!response.ok) {
+                        response.json().then(errorObj => {
+                            let errorMessage;
+                            // Determinar cuál mensaje de error mostrar
+                            if (errorObj.status === 400) {
+                                errorMessage = errorObj.errors[0]; // Usar el primer error de la lista
+                            } else {
+                                errorMessage = errorObj.message; // Usar el mensaje directamente
+                            }
+                            // Mostrar el mensaje de error
+                            Report.failure(
+                                'ERROR ' + response.status,
+                                errorMessage,
+                                'Aceptar'
+                            );
+                        });
                         } else { // Si la respuesta es 200 OK, muestro el mensaje de exito y recargo la lista de dispositivos
                             response.text().then(text => {
                                 Report.success(
@@ -225,6 +251,7 @@ const DispositivosRiego = () => {
                                 <th className='p-3 text-sm font-semibold text-left'>Zona</th>
                                 <th className='p-3 text-sm font-semibold text-left'>Humedad</th>
                                 <th className='p-3 text-sm font-semibold text-left'>Temperatura</th>
+                                <th className='p-3 text-sm font-semibold text-left'>Activo</th>
                                 <th className='p-3 text-sm font-semibold text-left w-[75px]'>Acciones</th>
                             </tr>
                         </thead>
@@ -236,8 +263,9 @@ const DispositivosRiego = () => {
                                     <td className='p-3 text-sm text-gray-700'>{item.idDispositivo}</td>
                                     <td className='p-3 text-sm text-gray-700'>{item.nombre}</td>
                                     <td className='p-3 text-sm text-gray-700'>{item.zona.nombre}</td>
-                                    <td className='p-3 text-sm text-gray-700'>{item.zona.humedad}</td>
-                                    <td className='p-3 text-sm text-gray-700'>{item.zona.temperatura}</td>
+                                    <td className='p-3 text-sm text-gray-700'>{item.humedad}</td>
+                                    <td className='p-3 text-sm text-gray-700'>{item.temperatura}</td>
+                                    <td className='p-3 text-sm text-gray-700'>{item.activo ? 'activo': 'inactivo'}</td>
 
                                     {/* Acciones */}
                                     <td className='flex justify-center py-2 gap-4'>
