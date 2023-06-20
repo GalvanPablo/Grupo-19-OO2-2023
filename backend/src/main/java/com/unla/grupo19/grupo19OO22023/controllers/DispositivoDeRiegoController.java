@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/api/dispositivos/riego")
 public class DispositivoDeRiegoController {
 

@@ -22,27 +22,23 @@ Queremos promover el uso inteligente de los recursos y compartir la información
 * [Andres Ezequiel Cupo](https://github.com/Suhiang98)
 * [Sebastián Marioni ](https://github.com/sebastianmarioni)
 * [Pablo Galvan](https://github.com/GalvanPablo)
-* [Edgar Rios](https://github.com/Edgar-Rios)
 
 ## :package: Soluciones IoT
 - :bulb: `Alumbrado exterior`
 - :droplet: `Riego`
 - :car: `Estacionamiento`
-- :recycle: `Recolectores inteligentes`
 
 
-## :wrench: Tecnologias a usar <!-- CAMBIAR A "Tecnologias usadas" -->
+## :wrench: Tecnologias usadas
 ![Spring](https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![SpringBoot](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring-boot)
 ![SpringSecurity](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=Spring-Security&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=for-the-badge&logo=Hibernate&logoColor=white)
-![Maven](https://img.shields.io/badge/apache_maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tailwindcss](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Maven](https://img.shields.io/badge/apache_maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
 
-## :gear: Dependencias
-* [JPA](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa)
-* [Spring Devtools](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools)
-* [MySQL](https://mvnrepository.com/artifact/com.mysql/mysql-connector-j)
-* [Lombok](https://mvnrepository.com/artifact/org.projectlombok/lombok?repo=projectlombok-mavenrepo)
-* [Model Mapper](https://mvnrepository.com/artifact/org.modelmapper/modelmapper)
-* [Hibernate Validator Anotation](https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator)
+## :spiral_notepad: Diagrama de clases
+![DiagramaDeClases](./diagrama-clases.png)

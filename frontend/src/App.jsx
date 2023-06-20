@@ -10,7 +10,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Navbar, Sidebar } from './layout'
 
 // Paginas
-import { Auth, Dashboard, NotFound, DispositivosEstacionamiento, EventosDispositivo } from './pages'
+import { Auth, Dashboard, NotFound, DispositivosEstacionamiento, DispositivosAlumbrado, DispositivoRiego, EventosDispositivo } from './pages'
 
 import './App.css';
 
@@ -44,7 +44,8 @@ function App() {
 
                                 {/* Soluciones IoT */}
                                 <Route path='/estacionamiento' element={<DispositivosEstacionamiento />} />
-
+                                <Route path='/riego' element={<DispositivoRiego/>} />
+                                <Route path='/alumbrado' element={<DispositivosAlumbrado />} />
 
                                 {/* Eventos */}
                                 <Route path='/eventos/dispositivo/:idDispositivo' element={<EventosDispositivo />} />

@@ -3,11 +3,8 @@ import { Header, Modal } from './../../components';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-// Componentes usados para el formulario
-import { MultiselectNumber } from './../../components';
-
 // Links de la API
-import { API_ESTACIONAMIENTO, API_ZONAS } from '../../data/api';
+import {API_ZONAS, API_RIEGO } from '../../data/api';
 
 // Iconos
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -18,13 +15,12 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 
 
-const DispositivosEstacionamiento = () => {
+const DispositivosRiego = () => {
+
     const { role } = useSelector((state) => state.auth); // Extrae el rol del usuario del store de redux
     const token = useSelector((state) => state.auth.token); // Extrae el token del usuario del store de redux
 
-    useEffect(() => {
-        console.log(token);
-    }, [token])
+    const tienePermiso = role === 'ADMIN'; // Si el rol es ADMIN, se le permite editar y eliminar
 
     const [zonas, setZonas] = React.useState([]); // Donde se guarda las zonas traidas de la api
     const cargarZonas = () => {
@@ -42,13 +38,13 @@ const DispositivosEstacionamiento = () => {
 
     const [dispositivos, setDispositivos] = React.useState([]); // Donde se guarda los dispositivos traidos de la api
     const cargarDispositivos = () => {
-        fetch(API_ESTACIONAMIENTO.GET_ALL, {
-                method: 'GET', // Método de la solicitud (puede ser GET, POST, PUT, DELETE, etc.)
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json' // Tipo de contenido de la solicitud (puede ser application/json u otro)
-                },
-            })
+        fetch(API_RIEGO.GET_ALL , {
+            method: 'GET', // Método de la solicitud (puede ser GET, POST, PUT, DELETE, etc.)
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json' // Tipo de contenido de la solicitud (puede ser application/json u otro)
+            },
+        })
             .then(response => response.json())
             .then(data => setDispositivos(data))
             .catch(error => Report.failure(
@@ -68,11 +64,13 @@ const DispositivosEstacionamiento = () => {
     const [id, setId] = useState(0);
     const [nombre, setNombre] = useState('');
     const [zona, setZona] = useState(null);
-    const [plazas, setPlazas] = useState([]);
+    const [humedad, setHumedad] = useState(0);
+    const [temperatura, setTemperatura] = useState(0);
+
 
     // Funcion para guardar el nuevi dispositivo o editar uno existente
     const handleGuardar = () => {
-        if (nombre.trim().length === 0 || zona == null || plazas.length === 0) {
+        if (nombre.trim().length === 0 || zona == null || humedad === NaN || temperatura === NaN) {
             Report.warning(
                 'Datos incompletos',
                 'Por favor complete todos los campos',
@@ -81,14 +79,16 @@ const DispositivosEstacionamiento = () => {
             return;
         }
         const data = {
+            idDispositivo: id,
             nombre: nombre,
             zona: zona,
-            plazas: plazas
+            humedad: humedad,
+            temperatura: temperatura
         }
 
         if (id === 0) {
             // NUEVO DISPOSITIVO
-            fetch(API_ESTACIONAMIENTO.CREATE, {
+            fetch(API_RIEGO.CREATE, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -96,28 +96,37 @@ const DispositivosEstacionamiento = () => {
                 },
                 body: JSON.stringify(data),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        response.text().then(text => {
-                            Report.failure(
-                                'ERROR ' + response.status,
-                                text,
-                                'Aceptar'
-                            );
-                        });
-                    } else {
-                        response.json()
-                        Report.success(
-                            'Dispositivo creado',
-                            'Se ha creado el dispositivo correctamente',
+            .then(response => {
+                if (!response.ok) {
+                    response.json().then(errorObj => {
+                        let errorMessage;
+                        // Determinar cuál mensaje de error mostrar
+                        if (errorObj.status === 400) {
+                            errorMessage = errorObj.errors[0]; // Usar el primer error de la lista
+                        } else {
+                            errorMessage = errorObj.message; // Usar el mensaje directamente
+                        }
+                        // Mostrar el mensaje de error
+                        Report.failure(
+                            'ERROR ' + response.status,
+                            errorMessage,
                             'Aceptar'
                         );
-                        cargarDispositivos();
-                    }
-                })
+                    });
+                } else {
+                    response.json()
+                    Report.success(
+                        'Dispositivo creado',
+                        'Se ha creado el dispositivo correctamente',
+                        'Aceptar'
+                    );
+                    cargarDispositivos();
+                }
+            })
         } else {
+            console.log(data);
             // EDITAR DISPOSITIVO
-            fetch(API_ESTACIONAMIENTO.UPDATE(id), {
+            fetch(API_RIEGO.UPDATE(id), {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -125,15 +134,23 @@ const DispositivosEstacionamiento = () => {
                 },
                 body: JSON.stringify(data),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        response.text().then(text => {
-                            Report.failure(
-                                'ERROR ' + response.status,
-                                text,
-                                'Aceptar'
-                            );
-                        });
+            .then(response => {
+                if (!response.ok) {
+                    response.json().then(errorObj => {
+                        let errorMessage;
+                        // Determinar cuál mensaje de error mostrar
+                        if (errorObj.status === 400) {
+                            errorMessage = errorObj.errors[0]; // Usar el primer error de la lista
+                        } else {
+                            errorMessage = errorObj.message; // Usar el mensaje directamente
+                        }
+                        // Mostrar el mensaje de error
+                        Report.failure(
+                            'ERROR ',
+                            errorMessage,
+                            'Aceptar'
+                        );
+                    });
                     } else {
                         response.json()
                         Report.success(
@@ -156,22 +173,30 @@ const DispositivosEstacionamiento = () => {
             'Confirmar',
             'Cancelar',
             () => { // Cuando se confirma la eliminacion, se envia la peticion a la api
-                fetch(API_ESTACIONAMIENTO.DELETE(id), {
-                    method: 'PUT',
+                fetch(API_RIEGO.DELETE(id), {
+                    method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                 })
-                    .then(response => { // Analizo la respuesta
-                        if (!response.ok) { // Si la respuesta no es 200 OK, muestro el error
-                            response.text().then(text => { // Convierto la respuesta a texto
-                                Report.failure(
-                                    'ERROR ' + response.status,
-                                    text,
-                                    'Aceptar'
-                                );
-                            });
+                .then(response => {
+                    if (!response.ok) {
+                        response.json().then(errorObj => {
+                            let errorMessage;
+                            // Determinar cuál mensaje de error mostrar
+                            if (errorObj.status === 400) {
+                                errorMessage = errorObj.errors[0]; // Usar el primer error de la lista
+                            } else {
+                                errorMessage = errorObj.message; // Usar el mensaje directamente
+                            }
+                            // Mostrar el mensaje de error
+                            Report.failure(
+                                'ERROR ' + response.status,
+                                errorMessage,
+                                'Aceptar'
+                            );
+                        });
                         } else { // Si la respuesta es 200 OK, muestro el mensaje de exito y recargo la lista de dispositivos
                             response.text().then(text => {
                                 Report.success(
@@ -193,7 +218,7 @@ const DispositivosEstacionamiento = () => {
 
     return (
         <div className='m-2 mt-16 md:m-10  p-2 md:p-10 bg-white rounded-3xl'>
-            <Header category='Dispositivos' title='Estacionamiento' icon={faCar} />
+            <Header category='Dispositivos' title='Riego' icon={faCar} />
             <div>
                 {/* Si se tiene el rol de administrador, muestro el boton 'Nuevo' */}
                 {role === 'ADMIN' && (
@@ -204,7 +229,8 @@ const DispositivosEstacionamiento = () => {
                             setId(0);
                             setNombre('');
                             setZona(null);
-                            setPlazas([]);
+                            setHumedad(0);
+                            setTemperatura(0);
 
                             setDesplegoZona(false); // Reinicio el select de zonas
                             setModalOpen(true); // Abro el modal
@@ -220,7 +246,9 @@ const DispositivosEstacionamiento = () => {
                                 <th className='p-3 text-sm font-semibold text-left'>Id</th>
                                 <th className='p-3 text-sm font-semibold text-left'>Nombre</th>
                                 <th className='p-3 text-sm font-semibold text-left'>Zona</th>
-                                <th className='p-3 text-sm font-semibold text-left'>Plazas</th>
+                                <th className='p-3 text-sm font-semibold text-left'>Humedad</th>
+                                <th className='p-3 text-sm font-semibold text-left'>Temperatura</th>
+                                <th className='p-3 text-sm font-semibold text-left'>Activo</th>
                                 <th className='p-3 text-sm font-semibold text-left w-[75px]'>Acciones</th>
                             </tr>
                         </thead>
@@ -232,12 +260,9 @@ const DispositivosEstacionamiento = () => {
                                     <td className='p-3 text-sm text-gray-700'>{item.idDispositivo}</td>
                                     <td className='p-3 text-sm text-gray-700'>{item.nombre}</td>
                                     <td className='p-3 text-sm text-gray-700'>{item.zona.nombre}</td>
-
-                                    <td className='p-3 text-sm text-gray-700 w-400'>
-                                        {item.plazas.map((plaza) => (
-                                            <span className='bg-zinc-200 inline-block mx-1 rounded-xl w-7 h-5 text-center' key={plaza}>{plaza} </span>
-                                        ))}
-                                    </td>
+                                    <td className='p-3 text-sm text-gray-700'>{item.humedad}</td>
+                                    <td className='p-3 text-sm text-gray-700'>{item.temperatura}</td>
+                                    <td className='p-3 text-sm text-gray-700'>{item.activo ? 'activo': 'inactivo'}</td>
 
                                     {/* Acciones */}
                                     <td className='flex justify-center py-2 gap-4'>
@@ -255,7 +280,8 @@ const DispositivosEstacionamiento = () => {
                                                         setId(item.idDispositivo);
                                                         setNombre(item.nombre);
                                                         setZona(item.zona);
-                                                        setPlazas(item.plazas);
+                                                        setHumedad(item.humedad);
+                                                        setTemperatura(item.temperatura);
 
                                                         setModalOpen(true);
                                                     }}
@@ -325,10 +351,34 @@ const DispositivosEstacionamiento = () => {
                             </div>
                         </div>
 
-                        {/* Input PLAZAS */}
-                        <div>
-                            <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">Plazas</label>
-                            <MultiselectNumber value={plazas} onChange={setPlazas} placeholder='Ingrese una plaza y presione enter' />
+                         {/* Input HUMEDAD */}
+                         <div>
+                            <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
+                                Humedad
+                            </label>
+                            <div className="mt-2">
+                                <input type="text" name="humedad" id="humedad"
+                                    className="block w-full p-2 rounded-md border-1"
+                                    placeholder='Humedad del dispositivo'
+                                    onChange={(e) => setHumedad(e.target.value)}
+                                    value={humedad}
+                                />
+                            </div>
+                        </div>
+
+                          {/* Input TEMPERATURA */}
+                          <div>
+                            <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
+                                Temperatura
+                            </label>
+                            <div className="mt-2">
+                                <input type="text" name="temperatura" id="temperatura"
+                                    className="block w-full p-2 rounded-md border-1"
+                                    placeholder='Temperatura del dispositivo'
+                                    onChange={(e) => setTemperatura(e.target.value)}
+                                    value={temperatura}
+                                />
+                            </div>
                         </div>
 
 
@@ -356,4 +406,4 @@ const DispositivosEstacionamiento = () => {
     )
 }
 
-export default DispositivosEstacionamiento
+export default DispositivosRiego
