@@ -7,7 +7,8 @@ export const API_ESTACIONAMIENTO = {
     UPDATE: (id) => API_URL + `dispositivos/estacionamiento/${id}`,
     GET_ALL: API_URL + 'dispositivos/estacionamiento',
     GET_BY_ID: (id) => API_URL + `dispositivos/estacionamiento/${id}`,
-    // GET_BY_NAME: (name) => API_URL + `dispositivos/estacionamiento?name=${name}`,
+
+    GET_LAST_STATE: API_URL + 'mediciones/estacionamiento/ultimas',
 }
 
 export const API_EVENTO = {

@@ -26,8 +26,6 @@ const DispositivosEstacionamiento = () => {
         console.log(token);
     }, [token])
 
-    const tienePermiso = role === 'ADMIN'; // Si el rol es ADMIN, se le permite editar y eliminar
-
     const [zonas, setZonas] = React.useState([]); // Donde se guarda las zonas traidas de la api
     const cargarZonas = () => {
         fetch(API_ZONAS.GET_ALL, {
