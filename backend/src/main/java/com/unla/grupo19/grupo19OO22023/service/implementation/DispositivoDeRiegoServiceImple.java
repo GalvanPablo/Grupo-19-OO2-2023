@@ -58,10 +58,12 @@ public class DispositivoDeRiegoServiceImple implements DispositivoDeRiegoService
 		Optional<DispositivoDeRiego> dispositivo = dispositivoDeRiegoDAO.buscarPorNombre(dispositivoDeRiegoDTO.getNombre());
 		DispositivoDeRiego loadedDispositivo = this.loadDispositivoDeRiegoById(idDispositivo);
 		
-		if(!loadedDispositivo.getNombre().equalsIgnoreCase(dispositivo.get().getNombre()))
-		{
-			if(dispositivo.isPresent() && dispositivo.get().getNombre().equalsIgnoreCase(dispositivoDeRiegoDTO.getNombre())) {
-				throw new DispositivoDeRiegoServiceException("El nombre del dispositivo que quiere agregar ya esta ocupado, porfavor ingrese otro");
+		if(!dispositivo.isEmpty() ) {
+			if(!loadedDispositivo.getNombre().equalsIgnoreCase(dispositivo.get().getNombre()))
+			{
+				if(dispositivo.isPresent() && dispositivo.get().getNombre().equalsIgnoreCase(dispositivoDeRiegoDTO.getNombre())) {
+					throw new DispositivoDeRiegoServiceException("El nombre del dispositivo que quiere agregar ya esta ocupado, porfavor ingrese otro");
+				}
 			}
 		}
 		
